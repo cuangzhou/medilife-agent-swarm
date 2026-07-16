@@ -1,5 +1,8 @@
 name: Release candidate
 
+env:
+  PYTHONUTF8: "1"
+
 on:
   workflow_dispatch:
   push:
@@ -32,4 +35,3 @@ jobs:
           path: |
             dist/*
             sbom.json
-
