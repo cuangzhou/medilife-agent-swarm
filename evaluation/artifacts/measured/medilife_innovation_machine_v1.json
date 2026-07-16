@@ -4,7 +4,7 @@
   "dataset_version": "medilife-longitudinal-v1",
   "result_kind": "measured",
   "implementation_status": "mvp",
-  "git_commit": "unversioned",
+  "git_commit": "2c800b81b0c28a2c844c43740f94c8bad49fd57f",
   "command": "python evaluation/innovation_benchmark.py",
   "case_count": 50,
   "repetitions": 1,
@@ -19,8 +19,8 @@
     "high_risk_auto_promotion_block_rate": 1.0,
     "irrelevant_memory_robustness_rate": 1.0,
     "irrelevant_memory_admission_rate": 0.0,
-    "mean_query_latency_ms": 0.059308000054443255,
-    "p95_query_latency_ms": 0.09160000263364054
+    "mean_query_latency_ms": 0.04598999978043139,
+    "p95_query_latency_ms": 0.049700000090524554
   },
   "limitations": [
     "全自动确定性工程评测，无人工或 LLM Judge",
@@ -31,5 +31,5 @@
     "python": "3.12.5",
     "platform": "Windows-11-10.0.26200-SP0"
   },
-  "generated_at": "2026-07-14T12:49:18.677357+00:00"
+  "generated_at": "2026-07-16T03:50:08.517978+00:00"
 }

@@ -4,7 +4,7 @@
   "dataset_version": "medilife-longitudinal-v1",
   "result_kind": "measured",
   "implementation_status": "mvp",
-  "git_commit": "unversioned",
+  "git_commit": "2c800b81b0c28a2c844c43740f94c8bad49fd57f",
   "command": "python evaluation/evidence_memory_benchmark.py --mode full",
   "case_count": 50,
   "repetitions": 3,
@@ -35,9 +35,9 @@
         "source_coverage": 1.0,
         "unsupported_claim_rate": 0.0,
         "high_risk_recall": 1.0,
-        "graph_p50_latency_ms": 0.1419000000169035,
-        "graph_p95_latency_ms": 0.23673333392556137,
-        "static_p50_latency_ms": 0.11371666672251497,
+        "graph_p50_latency_ms": 0.13750000107393134,
+        "graph_p95_latency_ms": 0.17793333487740406,
+        "static_p50_latency_ms": 0.10998333285291058,
         "avg_tokens": "NOT_MEASURED",
         "stddev": {
           "static_recall_at_5": 0.0,
@@ -49,9 +49,9 @@
           "source_coverage": 0.0,
           "unsupported_claim_rate": 0.0,
           "high_risk_recall": 0.0,
-          "graph_p50_latency_ms": 0.00032403697621318514,
-          "graph_p95_latency_ms": 0.016226795718915367,
-          "static_p50_latency_ms": 0.0014839881519875468
+          "graph_p50_latency_ms": 0.0023241480381072737,
+          "graph_p95_latency_ms": 0.02940049172189174,
+          "static_p50_latency_ms": 0.0035572301210743383
         }
       },
       "runs": [
@@ -65,9 +65,9 @@
           "source_coverage": 1.0,
           "unsupported_claim_rate": 0.0,
           "high_risk_recall": 1.0,
-          "graph_p50_latency_ms": 0.1420499993400881,
-          "graph_p95_latency_ms": 0.21879999985685572,
-          "static_p50_latency_ms": 0.11224999980186112,
+          "graph_p50_latency_ms": 0.14075000035518315,
+          "graph_p95_latency_ms": 0.21860000197193585,
+          "static_p50_latency_ms": 0.11499999891384505,
           "avg_tokens": "NOT_MEASURED"
         },
         {
@@ -80,9 +80,9 @@
           "source_coverage": 1.0,
           "unsupported_claim_rate": 0.0,
           "high_risk_recall": 1.0,
-          "graph_p50_latency_ms": 0.1414500002283603,
-          "graph_p95_latency_ms": 0.23330000112764537,
-          "static_p50_latency_ms": 0.11315000119793694,
+          "graph_p50_latency_ms": 0.13630000103148632,
+          "graph_p95_latency_ms": 0.16510000205016695,
+          "static_p50_latency_ms": 0.10780000047816429,
           "avg_tokens": "NOT_MEASURED"
         },
         {
@@ -95,9 +95,9 @@
           "source_coverage": 1.0,
           "unsupported_claim_rate": 0.0,
           "high_risk_recall": 1.0,
-          "graph_p50_latency_ms": 0.1422000004822621,
-          "graph_p95_latency_ms": 0.258100000792183,
-          "static_p50_latency_ms": 0.11574999916774686,
+          "graph_p50_latency_ms": 0.13545000183512457,
+          "graph_p95_latency_ms": 0.15010000061010942,
+          "static_p50_latency_ms": 0.10714999916672241,
           "avg_tokens": "NOT_MEASURED"
         }
       ],
@@ -414,5 +414,5 @@
     "python": "3.12.5",
     "platform": "Windows-11-10.0.26200-SP0"
   },
-  "generated_at": "2026-07-14T12:31:40.111707+00:00"
+  "generated_at": "2026-07-16T03:50:07.796197+00:00"
 }

@@ -4,7 +4,7 @@
   "dataset_version": "medilife-longitudinal-placeholder-v1",
   "result_kind": "placeholder",
   "implementation_status": "design",
-  "git_commit": "unversioned",
+  "git_commit": "2c800b81b0c28a2c844c43740f94c8bad49fd57f",
   "command": "python evaluation/generate_placeholder.py",
   "case_count": 30,
   "repetitions": 3,
@@ -58,5 +58,5 @@
     "python": "3.12.5",
     "platform": "Windows-11-10.0.26200-SP0"
   },
-  "generated_at": "2026-07-14T12:31:37.614309+00:00"
+  "generated_at": "2026-07-16T03:50:08.950258+00:00"
 }

@@ -8,7 +8,7 @@ version = "0.2.0"
 description = "A governed multi-agent medical information retrieval and risk guidance system"
 readme = "README.md"
 requires-python = ">=3.11"
-license = {text = "Proprietary"}
+license = "LicenseRef-Proprietary"
 authors = [{name = "MediLife Team"}]
 dependencies = [
   "fastapi>=0.115,<1",
