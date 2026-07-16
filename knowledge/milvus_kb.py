@@ -15,6 +15,7 @@ from loguru import logger
 
 from pymilvus import MilvusClient
 from sentence_transformers import SentenceTransformer
+from .resources import prepare_knowledge_db
 
 
 class MedicalKnowledgeBase:
@@ -30,7 +31,7 @@ class MedicalKnowledgeBase:
 
     def __init__(
         self,
-        db_path: str = "./knowledge/data/milvus_lite.db",
+        db_path: Optional[str] = None,
         collection_name: str = "medical_knowledge",
         embedding_model: str = "BAAI/bge-small-zh-v1.5"
     ):
@@ -46,11 +47,11 @@ class MedicalKnowledgeBase:
         if hasattr(self, '_initialized'):
             return
 
-        self.db_path = db_path
+        self.db_path = str(db_path or prepare_knowledge_db())
         self.collection_name = collection_name
 
         # 确保数据目录存在
-        Path(db_path).parent.mkdir(parents=True, exist_ok=True)
+        Path(self.db_path).parent.mkdir(parents=True, exist_ok=True)
 
         # 初始化 Embedding 模型（支持本地路径）
         # 优先检查本地缓存路径
@@ -74,8 +75,8 @@ class MedicalKnowledgeBase:
         logger.info(f"Embedding model loaded (dimension={self.embedding_dim})")
 
         # 初始化 Milvus Lite
-        logger.info(f"Connecting to Milvus Lite: {db_path}")
-        self.milvus_client = MilvusClient(db_path)
+        logger.info(f"Connecting to Milvus Lite: {self.db_path}")
+        self.milvus_client = MilvusClient(self.db_path)
 
         # 创建 collection（如果不存在）
         if not self.milvus_client.has_collection(collection_name):

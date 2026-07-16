@@ -31,7 +31,7 @@ jobs:
           subject-path: "dist/*"
       - uses: actions/upload-artifact@v4
         with:
-          name: medilife-0.2.0-release-candidate
+          name: medilife-0.3.0-release-candidate
           path: |
             dist/*
             sbom.json

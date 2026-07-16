@@ -9,6 +9,15 @@ from result_contract import export_measured_metrics, make_result, write_result
 
 
 class EvaluationContractTests(unittest.TestCase):
+    def test_upstream_artifacts_cannot_be_exported(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / "upstream_artifacts"
+            root.mkdir()
+            source = root / "example.json"
+            source.write_text("{}", encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "upstream example"):
+                export_measured_metrics(source, root / "resume.json")
+
     def test_placeholder_cannot_be_exported(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

@@ -30,6 +30,7 @@ from memory.evidence_memory import (
     EvidenceSource,
 )
 from knowledge.evidence_vector_index import MilvusEvidenceVectorIndex
+from knowledge.resources import bundled_knowledge_db, evidence_index_db, evidence_memory_store
 
 try:
     from core.llm_client import LLM_CONFIG
@@ -71,9 +72,9 @@ class EvidenceVerifyRequest(BaseModel):
     verifier_passed: bool = False
 
 
-EVIDENCE_MEMORY_PATH = SWARM_ROOT / "memory" / "data" / "evidence_memory.json"
+EVIDENCE_MEMORY_PATH = evidence_memory_store()
 evidence_vector_index = MilvusEvidenceVectorIndex(
-    db_path=str(SWARM_ROOT / "knowledge" / "data" / "evidence_memory.db")
+    db_path=str(evidence_index_db())
 )
 evidence_memory_service = EvidenceMemoryService(
     store=EvidenceMemoryStore(str(EVIDENCE_MEMORY_PATH)),
@@ -91,7 +92,7 @@ def mem0_available() -> bool:
 
 
 def knowledge_base_available() -> bool:
-    return (SWARM_ROOT / "knowledge" / "data" / "milvus_lite.db").exists()
+    return bundled_knowledge_db().exists()
 
 
 def health_service_metadata() -> Dict[str, Any]:

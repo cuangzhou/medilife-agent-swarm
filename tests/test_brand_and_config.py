@@ -12,8 +12,15 @@ class BrandAndConfigTests(unittest.TestCase):
     def test_repository_has_no_retired_identifier(self):
         retired = "medi" + "x"
         excluded = {".git", "__pycache__", ".pytest_cache", "dist", "build"}
+        allowed_files = {
+            ROOT / "THIRD_PARTY_NOTICES.md",
+            ROOT / "training" / "LICENSE",
+            ROOT / "training" / "README.md",
+        }
         for path in ROOT.rglob("*"):
             if not path.is_file() or any(part in excluded for part in path.parts):
+                continue
+            if path in allowed_files or "upstream_artifacts" in path.parts:
                 continue
             if path.suffix.lower() in {".db", ".pyc"}:
                 data = path.read_bytes().lower()
@@ -41,4 +48,3 @@ class BrandAndConfigTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

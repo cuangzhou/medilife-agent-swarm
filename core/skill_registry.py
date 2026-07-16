@@ -98,6 +98,14 @@ class SkillRegistry:
             logger.debug(f"Skill {name} completed successfully")
             return result
 
+        except (ImportError, ModuleNotFoundError) as e:
+            logger.warning(f"Optional capability unavailable for {name}: {e}")
+            return {
+                "success": False,
+                "status": "unavailable",
+                "error": str(e),
+                "skill": name,
+            }
         except Exception as e:
             error_msg = f"Skill execution failed: {name} - {str(e)}"
             logger.error(error_msg)

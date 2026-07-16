@@ -8,6 +8,7 @@ import re
 
 from .base_agent import BaseAgent
 from .skill_registry_mixin import SkillRegistryMixin
+from core import LLMClient
 
 
 class ConsultationAgent(BaseAgent, SkillRegistryMixin):
@@ -16,7 +17,7 @@ class ConsultationAgent(BaseAgent, SkillRegistryMixin):
     通过 Skills 调用底层工具
     """
 
-    def __init__(self, config: Dict[str, Any] = None):
+    def __init__(self, config: Dict[str, Any] = None, llm_client: LLMClient = None):
         default_config = {
             "model": "openai_compatible",
             "max_iterations": 5,
@@ -27,7 +28,8 @@ class ConsultationAgent(BaseAgent, SkillRegistryMixin):
         config = config or default_config
         super().__init__(
             agent_id="consultation_agent",
-            config=config
+            config=config,
+            llm_client=llm_client,
         )
 
         # 设置能力标签（Swarm 协作用）

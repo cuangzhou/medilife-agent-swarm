@@ -1,6 +1,6 @@
 """
 Skill Loader 辅助函数
-用于动态加载 .claude/skills 目录下的 Skill 函数（自动发现）
+用于动态加载 medilife_skills 资源包中的 Skill 函数（自动发现）
 """
 from pathlib import Path
 import importlib.util
@@ -30,7 +30,7 @@ def load_skill_function(skill_name: str, script_name: str, function_name: str, p
         # 自动检测项目根目录（假设当前文件在 core/ 目录）
         project_root = Path(__file__).parent.parent
 
-    skills_dir = project_root / ".claude" / "skills"
+    skills_dir = project_root / "medilife_skills"
     module_path = skills_dir / skill_name / "script" / f"{script_name}.py"
 
     if not module_path.exists():
@@ -80,7 +80,7 @@ def parse_skill_md(file_path: Path) -> Optional[Dict]:
 
 def discover_skills(project_root: Path = None) -> List[Dict]:
     """
-    自动扫描 .claude/skills 目录，发现所有 skills
+    自动扫描 medilife_skills 资源包，发现所有 skills
 
     Args:
         project_root: 项目根目录（如果为 None，自动检测）
@@ -99,7 +99,7 @@ def discover_skills(project_root: Path = None) -> List[Dict]:
     if project_root is None:
         project_root = Path(__file__).parent.parent
 
-    skills_dir = project_root / ".claude" / "skills"
+    skills_dir = project_root / "medilife_skills"
 
     if not skills_dir.exists():
         logger.warning(f"Skills directory not found: {skills_dir}")

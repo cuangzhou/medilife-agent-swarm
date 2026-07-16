@@ -58,6 +58,8 @@ def write_result(result: dict[str, Any], path: Path) -> None:
 
 
 def export_measured_metrics(source: Path, output: Path) -> None:
+    if "upstream_artifacts" in source.parts:
+        raise ValueError("REFUSED: upstream example artifacts are not MediLife measured evidence")
     result = json.loads(source.read_text(encoding="utf-8"))
     validate_result(result)
     if result["result_kind"] != "measured":

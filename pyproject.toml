@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "medilife-agent-swarm"
-version = "0.2.0"
+version = "0.3.0"
 description = "A governed multi-agent medical information retrieval and risk guidance system"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -40,7 +40,12 @@ medilife = "main:main"
 py-modules = ["api_server", "main"]
 
 [tool.setuptools.packages.find]
-include = ["agents*", "constraints*", "core*", "knowledge*", "memory*", "research*", "swarm*", "validation*"]
+include = ["agents*", "constraints*", "core*", "knowledge*", "medilife_skills*", "memory*", "research*", "swarm*", "validation*"]
+
+[tool.setuptools.package-data]
+constraints = ["*.yaml"]
+knowledge = ["data/*.db", "data/documents/*.txt"]
+medilife_skills = ["*/SKILL.md", "*/script/*.py"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

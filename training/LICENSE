@@ -1,0 +1,11 @@
+The MediLife training subsystem is an adapted research-only distribution of
+the upstream MediX-R1 training and evaluation code.
+
+It is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike
+4.0 International license (CC BY-NC-SA 4.0):
+https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
+
+It is not intended for clinical or commercial use. Apache-2.0 notices for the
+EasyR1/veRL-derived framework remain applicable as described in the repository
+root THIRD_PARTY_NOTICES.md.
+

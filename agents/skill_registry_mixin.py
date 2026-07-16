@@ -21,7 +21,7 @@ class SkillRegistryMixin:
         """
         自动扫描并注册所有 Skills
 
-        Skills 会从 .claude/skills/ 目录自动发现，
+        Skills 会从 medilife_skills 资源包自动发现，
         无需手动维护列表
         """
         project_root = Path(__file__).parent.parent

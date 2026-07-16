@@ -1,0 +1,7 @@
+Model: /mnt/data/guyx/self-learn/swarm/MediX-R1/training/checkpoints/medix-r1_2b_dapo/global_step_600/actor/huggingface
+
+      Task  Accuracy Accuracy (%)
+0  rad_vqa  0.494457       49.45%Model: /mnt/data/guyx/self-learn/swarm/MediX-R1/training/checkpoints/medix-r1_2b_dapo/global_step_600/actor/huggingface
+
+      Task  Accuracy Accuracy (%)
+0  rad_vqa  0.494457       49.45%
