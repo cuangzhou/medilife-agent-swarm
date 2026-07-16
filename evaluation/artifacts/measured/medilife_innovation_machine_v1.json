@@ -1,0 +1,35 @@
+{
+  "project": "MediLife",
+  "benchmark": "governed-evidence-memory-innovation",
+  "dataset_version": "medilife-longitudinal-v1",
+  "result_kind": "measured",
+  "implementation_status": "mvp",
+  "git_commit": "unversioned",
+  "command": "python evaluation/innovation_benchmark.py",
+  "case_count": 50,
+  "repetitions": 1,
+  "seed": 20260714,
+  "metrics": {
+    "graph_multihop_recall": 1.0,
+    "conflict_detection_rate": 1.0,
+    "unverified_candidate_exclusion_rate": 1.0,
+    "cross_user_leakage_rate": 0.0,
+    "source_traceability_rate": 1.0,
+    "temporal_supersession_correctness": 1.0,
+    "high_risk_auto_promotion_block_rate": 1.0,
+    "irrelevant_memory_robustness_rate": 1.0,
+    "irrelevant_memory_admission_rate": 0.0,
+    "mean_query_latency_ms": 0.059308000054443255,
+    "p95_query_latency_ms": 0.09160000263364054
+  },
+  "limitations": [
+    "全自动确定性工程评测，无人工或 LLM Judge",
+    "使用匿名合成纵向病例，不代表临床有效性",
+    "评测 Evidence Memory 治理与图关系逻辑，不冒充 Milvus/Mem0 端到端结果"
+  ],
+  "environment": {
+    "python": "3.12.5",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "generated_at": "2026-07-14T12:49:18.677357+00:00"
+}

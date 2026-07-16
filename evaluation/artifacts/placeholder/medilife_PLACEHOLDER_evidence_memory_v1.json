@@ -1,0 +1,62 @@
+{
+  "project": "MediLife",
+  "benchmark": "evidence-memory-comparison",
+  "dataset_version": "medilife-longitudinal-placeholder-v1",
+  "result_kind": "placeholder",
+  "implementation_status": "design",
+  "git_commit": "unversioned",
+  "command": "python evaluation/generate_placeholder.py",
+  "case_count": 30,
+  "repetitions": 3,
+  "seed": 20260714,
+  "metrics": {
+    "groups": {
+      "milvus_static": {
+        "recall_at_5": 0.68,
+        "multi_hop_accuracy": 0.46,
+        "temporal_consistency": 0.55,
+        "conflict_detection_rate": 0.31,
+        "source_coverage": 0.72,
+        "unsupported_claim_rate": 0.18,
+        "high_risk_recall": 0.64,
+        "p50_latency_ms": 92,
+        "p95_latency_ms": 151,
+        "avg_tokens": 1210
+      },
+      "milvus_mem0": {
+        "recall_at_5": 0.75,
+        "multi_hop_accuracy": 0.58,
+        "temporal_consistency": 0.67,
+        "conflict_detection_rate": 0.47,
+        "source_coverage": 0.78,
+        "unsupported_claim_rate": 0.14,
+        "high_risk_recall": 0.71,
+        "p50_latency_ms": 117,
+        "p95_latency_ms": 198,
+        "avg_tokens": 1375
+      },
+      "evidence_graph": {
+        "recall_at_5": 0.84,
+        "multi_hop_accuracy": 0.73,
+        "temporal_consistency": 0.82,
+        "conflict_detection_rate": 0.79,
+        "source_coverage": 0.89,
+        "unsupported_claim_rate": 0.08,
+        "high_risk_recall": 0.86,
+        "p50_latency_ms": 149,
+        "p95_latency_ms": 254,
+        "avg_tokens": 1488
+      }
+    }
+  },
+  "limitations": [
+    "INTERNAL_PLACEHOLDER",
+    "模拟值，仅用于版式、接口和面试排练",
+    "不是临床质量结论"
+  ],
+  "environment": {
+    "python": "3.12.5",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "generated_at": "2026-07-14T12:31:37.614309+00:00"
+}
