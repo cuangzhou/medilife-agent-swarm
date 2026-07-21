@@ -53,6 +53,8 @@ class LLMResponse:
     content: Optional[str]
     tool_calls: List[ToolCall]
     finish_reason: str  # "stop", "tool_calls", "length", "content_filter"
+    usage: Optional[Dict[str, int]] = None
+    request_id: Optional[str] = None
 
     def has_tool_calls(self) -> bool:
         """是否包含 function calls"""
@@ -62,7 +64,7 @@ class LLMResponse:
 class LLMClient:
     """统一的LLM客户端，支持多种模型"""
 
-    def __init__(self, model_type: str = "openai_compatible"):
+    def __init__(self, model_type: str = "openai_compatible", config: Optional[Dict[str, Any]] = None):
         """
         初始化LLM客户端
 
@@ -73,7 +75,7 @@ class LLMClient:
 
         if model_type == "openai_compatible":
             # 使用 OpenAI 兼容的 API（通过 config.py 配置）
-            self.config = LLM_CONFIG
+            self.config = dict(config or LLM_CONFIG)
             self.client = AsyncOpenAI(
                 api_key=self.config["api_key"],
                 base_url=self.config["base_url"]
@@ -81,6 +83,13 @@ class LLMClient:
             self.model_name = self.config["model_name"]
             self.temperature = self.config.get("temperature", 0.7)
             self.max_tokens = self.config.get("max_tokens", 8192)
+            self.telemetry = {
+                "requests": 0,
+                "prompt_tokens": 0,
+                "completion_tokens": 0,
+                "total_tokens": 0,
+                "request_ids": [],
+            }
         else:
             raise ValueError(f"Unknown model type: {model_type}")
 
@@ -103,8 +112,8 @@ class LLMClient:
             模型返回的文本
         """
         try:
-            temperature = temperature or self.temperature
-            max_tokens = max_tokens or self.max_tokens
+            temperature = self.temperature if temperature is None else temperature
+            max_tokens = self.max_tokens if max_tokens is None else max_tokens
 
             logger.debug(f"Calling LLM ({self.model_type}) with {len(messages)} messages")
 
@@ -115,6 +124,8 @@ class LLMClient:
                 max_tokens=max_tokens,
                 **kwargs
             )
+
+            self._record_telemetry(response)
 
             content = response.choices[0].message.content
             logger.debug(f"LLM response length: {len(content)} chars")
@@ -185,8 +196,8 @@ class LLMClient:
             LLMResponse 对象
         """
         try:
-            temperature = temperature or self.temperature
-            max_tokens = max_tokens or self.max_tokens
+            temperature = self.temperature if temperature is None else temperature
+            max_tokens = self.max_tokens if max_tokens is None else max_tokens
 
             logger.debug(f"Calling LLM with {len(tools) if tools else 0} tools")
 
@@ -206,6 +217,7 @@ class LLMClient:
                     request_params["tool_choice"] = tool_choice
 
             response = await self.client.chat.completions.create(**request_params)
+            usage = self._record_telemetry(response)
 
             # 解析响应
             message = response.choices[0].message
@@ -225,12 +237,30 @@ class LLMClient:
             return LLMResponse(
                 content=message.content,
                 tool_calls=tool_calls,
-                finish_reason=finish_reason
+                finish_reason=finish_reason,
+                usage=usage,
+                request_id=getattr(response, "_request_id", None),
             )
 
         except Exception as e:
             logger.error(f"LLM call with tools failed: {e}")
             raise
+
+    def _record_telemetry(self, response: Any) -> Dict[str, int]:
+        """Record non-sensitive aggregate usage for evaluation artifacts."""
+        usage_obj = getattr(response, "usage", None)
+        usage = {
+            "prompt_tokens": int(getattr(usage_obj, "prompt_tokens", 0) or 0),
+            "completion_tokens": int(getattr(usage_obj, "completion_tokens", 0) or 0),
+            "total_tokens": int(getattr(usage_obj, "total_tokens", 0) or 0),
+        }
+        self.telemetry["requests"] += 1
+        for key, value in usage.items():
+            self.telemetry[key] += value
+        request_id = getattr(response, "_request_id", None)
+        if request_id:
+            self.telemetry["request_ids"].append(str(request_id))
+        return usage
 
     def create_tool_message(
         self,

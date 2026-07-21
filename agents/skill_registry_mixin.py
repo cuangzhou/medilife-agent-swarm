@@ -75,9 +75,19 @@ class SkillRegistryMixin:
             required = param.default == inspect.Parameter.empty
 
             # 推断类型（简单规则）
-            param_type = "string"
-            if "count" in param_name or "limit" in param_name or "max" in param_name or "iterations" in param_name:
-                param_type = "number"
+            annotation_types = {
+                str: "string",
+                int: "integer",
+                float: "number",
+                bool: "boolean",
+                dict: "object",
+                list: "array",
+            }
+            param_type = annotation_types.get(param.annotation, "string")
+            if param.annotation == inspect.Parameter.empty and (
+                "count" in param_name or "limit" in param_name or "max" in param_name or "iterations" in param_name
+            ):
+                param_type = "integer"
 
             # 生成描述
             param_desc = param_name.replace('_', ' ').title()

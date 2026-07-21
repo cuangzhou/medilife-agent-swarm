@@ -7,6 +7,7 @@ from dataclasses import dataclass
 import inspect
 import asyncio
 from loguru import logger
+from pydantic import BaseModel, ConfigDict, RootModel, StrictBool, StrictFloat, StrictInt, StrictStr, ValidationError, create_model
 
 
 @dataclass
@@ -17,6 +18,35 @@ class SkillParameter:
     description: str
     required: bool = False
     enum: Optional[List[str]] = None
+
+
+class SkillOutput(RootModel[Dict[str, Any]]):
+    """Common output contract for all registered Skills."""
+
+
+_PYDANTIC_TYPES = {
+    "string": StrictStr,
+    "number": StrictFloat,
+    "integer": StrictInt,
+    "boolean": StrictBool,
+    "object": Dict[str, Any],
+    "array": List[Any],
+}
+
+
+def _build_input_model(name: str, parameters: List[SkillParameter]) -> type[BaseModel]:
+    fields: Dict[str, Any] = {}
+    for parameter in parameters:
+        annotation = _PYDANTIC_TYPES.get(parameter.type, Any)
+        default = ... if parameter.required else None
+        if not parameter.required:
+            annotation = Optional[annotation]
+        fields[parameter.name] = (annotation, default)
+    return create_model(
+        f"{''.join(part.title() for part in name.split('_'))}Input",
+        __config__=ConfigDict(extra="forbid", strict=True),
+        **fields,
+    )
 
 
 class SkillRegistry:
@@ -49,7 +79,9 @@ class SkillRegistry:
             'function': function,
             'description': description,
             'parameters': parameters,
-            'is_async': inspect.iscoroutinefunction(function)
+            'is_async': inspect.iscoroutinefunction(function),
+            'input_model': _build_input_model(name, parameters),
+            'output_model': SkillOutput,
         }
         logger.debug(f"Registered skill: {name}")
 
@@ -82,22 +114,33 @@ class SkillRegistry:
             }
 
         try:
-            logger.debug(f"Executing skill: {name} with args: {kwargs}")
+            validated_input = skill['input_model'].model_validate(kwargs).model_dump(exclude_none=True)
+            logger.debug(f"Executing skill: {name} with args: {validated_input}")
 
             if skill['is_async']:
                 # Async skill
-                result = await skill['function'](**kwargs)
+                result = await skill['function'](**validated_input)
             else:
                 # Sync skill - run in executor
                 loop = asyncio.get_event_loop()
                 result = await loop.run_in_executor(
                     None,
-                    lambda: skill['function'](**kwargs)
+                    lambda: skill['function'](**validated_input)
                 )
 
+            result = skill['output_model'].model_validate(result).root
             logger.debug(f"Skill {name} completed successfully")
             return result
 
+        except ValidationError as e:
+            logger.warning(f"Skill validation failed: {name} - {e}")
+            return {
+                "success": False,
+                "status": "validation_error",
+                "error": "Skill input or output did not satisfy its Pydantic contract",
+                "skill": name,
+                "details": e.errors(include_url=False),
+            }
         except (ImportError, ModuleNotFoundError) as e:
             logger.warning(f"Optional capability unavailable for {name}: {e}")
             return {
@@ -125,21 +168,15 @@ class SkillRegistry:
         tools = []
 
         for name, skill in self.skills.items():
-            properties = {}
-            required = []
+            schema = skill['input_model'].model_json_schema()
+            properties = schema.get('properties', {})
+            required = schema.get('required', [])
 
             for param in skill['parameters']:
-                prop = {
-                    'type': param.type,
-                    'description': param.description
-                }
+                prop = properties.setdefault(param.name, {})
+                prop['description'] = param.description
                 if param.enum:
                     prop['enum'] = param.enum
-
-                properties[param.name] = prop
-
-                if param.required:
-                    required.append(param.name)
 
             tools.append({
                 'type': 'function',
@@ -149,7 +186,8 @@ class SkillRegistry:
                     'parameters': {
                         'type': 'object',
                         'properties': properties,
-                        'required': required
+                        'required': required,
+                        'additionalProperties': False,
                     }
                 }
             })

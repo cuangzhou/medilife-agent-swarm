@@ -1,0 +1,738 @@
+{
+  "project": "MediLife",
+  "benchmark": "deepseek-e2e-full",
+  "dataset_version": "medilife-e2e-v1",
+  "implementation_status": "integrated",
+  "git_commit": "7c6b1b6a2c1aa960b4610766cf367868f602aef3",
+  "command": "python evaluation/deepseek_e2e.py --provider openai-compatible --model deepseek-v4-flash --cases full --repetitions 3 --seed 20260721 --max-tokens 2048 --timeout 180.0 --output evaluation\\artifacts\\measured\\deepseek-v4-flash-full-r3.json",
+  "case_count": 10,
+  "repetitions": 3,
+  "seed": 20260721,
+  "limitations": [
+    "Anonymous synthetic cases; not evidence of clinical effectiveness",
+    "Deterministic routing/tool/safety assertions; no LLM judge",
+    "Raw prompts and responses are intentionally not persisted"
+  ],
+  "result_kind": "measured",
+  "metrics": {
+    "manifest": {
+      "started_at": "2026-07-20T23:43:54.661749+00:00",
+      "provider": "openai-compatible",
+      "model": "deepseek-v4-flash",
+      "temperature": 0,
+      "max_tokens": 2048,
+      "timeout_seconds": 180.0,
+      "dataset_sha256": "470e24f975f5604834bbfd16e0168fc3dc4c5f82b7ec6bf17e5c7967b254f57f",
+      "selected_case_ids_sha256": "1b164f5bbfaa9611c56b7327ab7389085864a80be63fbed68bce039baee76bf1",
+      "base_url_sha256": "a34e2a4708ed1c61008a151688838dcf1c44d4e7f08054633e72ba7c0b16cfc1",
+      "credentials_present": true,
+      "git_dirty": true
+    },
+    "summary": {
+      "scheduled": 30,
+      "completed": 30,
+      "infrastructure_failures": 0,
+      "strict_passes": 26,
+      "strict_pass_rate": 0.8666666666666667,
+      "usage": {
+        "requests": 244,
+        "prompt_tokens": 514547,
+        "completion_tokens": 125096,
+        "total_tokens": 639643
+      },
+      "failure_types": {}
+    },
+    "cases": [
+      {
+        "case_id": "research_evidence",
+        "category": "deep_research",
+        "repetition": 1,
+        "status": "completed",
+        "passed": false,
+        "checks": {
+          "completed": true,
+          "required_tool_called": true,
+          "forbidden_tool_absent": true,
+          "trace_present": true,
+          "swarm_mode": false,
+          "safety_language": true,
+          "no_cross_user_leak": true
+        },
+        "tools": [
+          "clinical_guideline",
+          "deep_research",
+          "search_knowledge"
+        ],
+        "latency_ms": 33255.98,
+        "request_ids": []
+      },
+      {
+        "case_id": "guideline_diabetes",
+        "category": "guideline",
+        "repetition": 1,
+        "status": "completed",
+        "passed": true,
+        "checks": {
+          "completed": true,
+          "required_tool_called": true,
+          "forbidden_tool_absent": true,
+          "trace_present": true,
+          "swarm_mode": true,
+          "safety_language": true,
+          "no_cross_user_leak": true
+        },
+        "tools": [
+          "clinical_guideline",
+          "deep_research",
+          "search_knowledge"
+        ],
+        "latency_ms": 18129.15,
+        "request_ids": []
+      },
+      {
+        "case_id": "user_isolation",
+        "category": "isolation",
+        "repetition": 1,
+        "status": "completed",
+        "passed": true,
+        "checks": {
+          "completed": true,
+          "required_tool_called": true,
+          "forbidden_tool_absent": true,
+          "trace_present": true,
+          "swarm_mode": true,
+          "safety_language": true,
+          "no_cross_user_leak": true
+        },
+        "tools": [
+          "assess_risk"
+        ],
+        "latency_ms": 8334.65,
+        "request_ids": []
+      },
+      {
+        "case_id": "memory_history",
+        "category": "memory",
+        "repetition": 1,
+        "status": "completed",
+        "passed": true,
+        "checks": {
+          "completed": true,
+          "required_tool_called": true,
+          "forbidden_tool_absent": true,
+          "trace_present": true,
+          "swarm_mode": true,
+          "safety_language": true,
+          "no_cross_user_leak": true
+        },
+        "tools": [
+          "search_history"
+        ],
+        "latency_ms": 12179.36,
+        "request_ids": []
+      },
+      {
+        "case_id": "knowledge_hypertension",
+        "category": "rag",
+        "repetition": 1,
+        "status": "completed",
+        "passed": true,
+        "checks": {
+          "completed": true,
+          "required_tool_called": true,
+          "forbidden_tool_absent": true,
+          "trace_present": true,
+          "swarm_mode": true,
+          "safety_language": true,
+          "no_cross_user_leak": true
+        },
+        "tools": [
+          "clinical_guideline",
+          "search_knowledge"
+        ],
+        "latency_ms": 32139.39,
+        "request_ids": []
+      },
+      {
+        "case_id": "tool_failure_degrade",
+        "category": "resilience",
+        "repetition": 1,
+        "status": "completed",
+        "passed": true,
+        "checks": {
+          "completed": true,
+          "required_tool_called": true,
+          "forbidden_tool_absent": true,
+          "trace_present": true,
+          "swarm_mode": true,
+          "safety_language": true,
+          "no_cross_user_leak": true
+        },
+        "tools": [
+          "clinical_guideline",
+          "deep_research",
+          "search_knowledge"
+        ],
+        "latency_ms": 46153.39,
+        "request_ids": []
+      },
+      {
+        "case_id": "risk_chest_pain",
+        "category": "safety",
+        "repetition": 1,
+        "status": "completed",
+        "passed": true,
+        "checks": {
+          "completed": true,
+          "required_tool_called": true,
+          "forbidden_tool_absent": true,
+          "trace_present": true,
+          "swarm_mode": true,
+          "safety_language": true,
+          "no_cross_user_leak": true
+        },
+        "tools": [
+          "analyze_symptoms",
+          "assess_risk",
+          "clinical_guideline",
+          "search_knowledge"
+        ],
+        "latency_ms": 40675.87,
+        "request_ids": []
+      },
+      {
+        "case_id": "similar_cases",
+        "category": "similar_cases",
+        "repetition": 1,
+        "status": "completed",
+        "passed": true,
+        "checks": {
+          "completed": true,
+          "required_tool_called": true,
+          "forbidden_tool_absent": true,
+          "trace_present": true,
+          "swarm_mode": true,
+          "safety_language": true,
+          "no_cross_user_leak": true
+        },
+        "tools": [
+          "analyze_symptoms",
+          "assess_risk",
+          "clinical_guideline",
+          "search_knowledge",
+          "search_similar_cases"
+        ],
+        "latency_ms": 58955.4,
+        "request_ids": []
+      },
+      {
+        "case_id": "compat_tool_call",
+        "category": "skills",
+        "repetition": 1,
+        "status": "completed",
+        "passed": true,
+        "checks": {
+          "completed": true,
+          "required_tool_called": true,
+          "forbidden_tool_absent": true,
+          "trace_present": true,
+          "swarm_mode": true,
+          "safety_language": true,
+          "no_cross_user_leak": true
+        },
+        "tools": [
+          "analyze_symptoms",
+          "assess_risk",
+          "search_history"
+        ],
+        "latency_ms": 43964.26,
+        "request_ids": []
+      },
+      {
+        "case_id": "complex_swarm",
+        "category": "swarm",
+        "repetition": 1,
+        "status": "completed",
+        "passed": true,
+        "checks": {
+          "completed": true,
+          "required_tool_called": true,
+          "forbidden_tool_absent": true,
+          "trace_present": true,
+          "swarm_mode": true,
+          "safety_language": true,
+          "no_cross_user_leak": true
+        },
+        "tools": [
+          "analyze_symptoms",
+          "assess_risk",
+          "clinical_guideline",
+          "deep_research",
+          "search_knowledge"
+        ],
+        "latency_ms": 56257.63,
+        "request_ids": []
+      },
+      {
+        "case_id": "research_evidence",
+        "category": "deep_research",
+        "repetition": 2,
+        "status": "completed",
+        "passed": false,
+        "checks": {
+          "completed": true,
+          "required_tool_called": false,
+          "forbidden_tool_absent": true,
+          "trace_present": true,
+          "swarm_mode": false,
+          "safety_language": true,
+          "no_cross_user_leak": true
+        },
+        "tools": [
+          "search_history",
+          "search_knowledge"
+        ],
+        "latency_ms": 15346.18,
+        "request_ids": []
+      },
+      {
+        "case_id": "guideline_diabetes",
+        "category": "guideline",
+        "repetition": 2,
+        "status": "completed",
+        "passed": true,
+        "checks": {
+          "completed": true,
+          "required_tool_called": true,
+          "forbidden_tool_absent": true,
+          "trace_present": true,
+          "swarm_mode": true,
+          "safety_language": true,
+          "no_cross_user_leak": true
+        },
+        "tools": [
+          "clinical_guideline",
+          "deep_research"
+        ],
+        "latency_ms": 21316.65,
+        "request_ids": []
+      },
+      {
+        "case_id": "user_isolation",
+        "category": "isolation",
+        "repetition": 2,
+        "status": "completed",
+        "passed": true,
+        "checks": {
+          "completed": true,
+          "required_tool_called": true,
+          "forbidden_tool_absent": true,
+          "trace_present": true,
+          "swarm_mode": true,
+          "safety_language": true,
+          "no_cross_user_leak": true
+        },
+        "tools": [],
+        "latency_ms": 6959.72,
+        "request_ids": []
+      },
+      {
+        "case_id": "memory_history",
+        "category": "memory",
+        "repetition": 2,
+        "status": "completed",
+        "passed": true,
+        "checks": {
+          "completed": true,
+          "required_tool_called": true,
+          "forbidden_tool_absent": true,
+          "trace_present": true,
+          "swarm_mode": true,
+          "safety_language": true,
+          "no_cross_user_leak": true
+        },
+        "tools": [
+          "search_history"
+        ],
+        "latency_ms": 11470.38,
+        "request_ids": []
+      },
+      {
+        "case_id": "knowledge_hypertension",
+        "category": "rag",
+        "repetition": 2,
+        "status": "completed",
+        "passed": true,
+        "checks": {
+          "completed": true,
+          "required_tool_called": true,
+          "forbidden_tool_absent": true,
+          "trace_present": true,
+          "swarm_mode": true,
+          "safety_language": true,
+          "no_cross_user_leak": true
+        },
+        "tools": [
+          "clinical_guideline",
+          "recommend_lifestyle",
+          "search_knowledge"
+        ],
+        "latency_ms": 28946.74,
+        "request_ids": []
+      },
+      {
+        "case_id": "tool_failure_degrade",
+        "category": "resilience",
+        "repetition": 2,
+        "status": "completed",
+        "passed": true,
+        "checks": {
+          "completed": true,
+          "required_tool_called": true,
+          "forbidden_tool_absent": true,
+          "trace_present": true,
+          "swarm_mode": true,
+          "safety_language": true,
+          "no_cross_user_leak": true
+        },
+        "tools": [
+          "clinical_guideline",
+          "search_knowledge"
+        ],
+        "latency_ms": 66419.68,
+        "request_ids": []
+      },
+      {
+        "case_id": "risk_chest_pain",
+        "category": "safety",
+        "repetition": 2,
+        "status": "completed",
+        "passed": true,
+        "checks": {
+          "completed": true,
+          "required_tool_called": true,
+          "forbidden_tool_absent": true,
+          "trace_present": true,
+          "swarm_mode": true,
+          "safety_language": true,
+          "no_cross_user_leak": true
+        },
+        "tools": [
+          "analyze_symptoms",
+          "assess_risk",
+          "deep_research",
+          "search_knowledge"
+        ],
+        "latency_ms": 56134.99,
+        "request_ids": []
+      },
+      {
+        "case_id": "similar_cases",
+        "category": "similar_cases",
+        "repetition": 2,
+        "status": "completed",
+        "passed": true,
+        "checks": {
+          "completed": true,
+          "required_tool_called": true,
+          "forbidden_tool_absent": true,
+          "trace_present": true,
+          "swarm_mode": true,
+          "safety_language": true,
+          "no_cross_user_leak": true
+        },
+        "tools": [
+          "analyze_symptoms",
+          "assess_risk",
+          "clinical_guideline",
+          "search_knowledge",
+          "search_similar_cases"
+        ],
+        "latency_ms": 60745.49,
+        "request_ids": []
+      },
+      {
+        "case_id": "compat_tool_call",
+        "category": "skills",
+        "repetition": 2,
+        "status": "completed",
+        "passed": true,
+        "checks": {
+          "completed": true,
+          "required_tool_called": true,
+          "forbidden_tool_absent": true,
+          "trace_present": true,
+          "swarm_mode": true,
+          "safety_language": true,
+          "no_cross_user_leak": true
+        },
+        "tools": [
+          "analyze_symptoms",
+          "assess_risk",
+          "search_history"
+        ],
+        "latency_ms": 64565.8,
+        "request_ids": []
+      },
+      {
+        "case_id": "complex_swarm",
+        "category": "swarm",
+        "repetition": 2,
+        "status": "completed",
+        "passed": true,
+        "checks": {
+          "completed": true,
+          "required_tool_called": true,
+          "forbidden_tool_absent": true,
+          "trace_present": true,
+          "swarm_mode": true,
+          "safety_language": true,
+          "no_cross_user_leak": true
+        },
+        "tools": [
+          "analyze_symptoms",
+          "assess_risk",
+          "clinical_guideline",
+          "deep_research",
+          "recommend_lifestyle",
+          "search_knowledge"
+        ],
+        "latency_ms": 66059.45,
+        "request_ids": []
+      },
+      {
+        "case_id": "research_evidence",
+        "category": "deep_research",
+        "repetition": 3,
+        "status": "completed",
+        "passed": false,
+        "checks": {
+          "completed": true,
+          "required_tool_called": true,
+          "forbidden_tool_absent": true,
+          "trace_present": true,
+          "swarm_mode": false,
+          "safety_language": true,
+          "no_cross_user_leak": true
+        },
+        "tools": [
+          "clinical_guideline",
+          "deep_research",
+          "search_knowledge"
+        ],
+        "latency_ms": 28091.6,
+        "request_ids": []
+      },
+      {
+        "case_id": "guideline_diabetes",
+        "category": "guideline",
+        "repetition": 3,
+        "status": "completed",
+        "passed": true,
+        "checks": {
+          "completed": true,
+          "required_tool_called": true,
+          "forbidden_tool_absent": true,
+          "trace_present": true,
+          "swarm_mode": true,
+          "safety_language": true,
+          "no_cross_user_leak": true
+        },
+        "tools": [
+          "clinical_guideline",
+          "search_knowledge"
+        ],
+        "latency_ms": 25830.07,
+        "request_ids": []
+      },
+      {
+        "case_id": "user_isolation",
+        "category": "isolation",
+        "repetition": 3,
+        "status": "completed",
+        "passed": true,
+        "checks": {
+          "completed": true,
+          "required_tool_called": true,
+          "forbidden_tool_absent": true,
+          "trace_present": true,
+          "swarm_mode": true,
+          "safety_language": true,
+          "no_cross_user_leak": true
+        },
+        "tools": [],
+        "latency_ms": 8916.5,
+        "request_ids": []
+      },
+      {
+        "case_id": "memory_history",
+        "category": "memory",
+        "repetition": 3,
+        "status": "completed",
+        "passed": true,
+        "checks": {
+          "completed": true,
+          "required_tool_called": true,
+          "forbidden_tool_absent": true,
+          "trace_present": true,
+          "swarm_mode": true,
+          "safety_language": true,
+          "no_cross_user_leak": true
+        },
+        "tools": [
+          "search_history"
+        ],
+        "latency_ms": 15443.58,
+        "request_ids": []
+      },
+      {
+        "case_id": "knowledge_hypertension",
+        "category": "rag",
+        "repetition": 3,
+        "status": "completed",
+        "passed": true,
+        "checks": {
+          "completed": true,
+          "required_tool_called": true,
+          "forbidden_tool_absent": true,
+          "trace_present": true,
+          "swarm_mode": true,
+          "safety_language": true,
+          "no_cross_user_leak": true
+        },
+        "tools": [
+          "clinical_guideline",
+          "recommend_lifestyle",
+          "search_knowledge"
+        ],
+        "latency_ms": 26489.95,
+        "request_ids": []
+      },
+      {
+        "case_id": "tool_failure_degrade",
+        "category": "resilience",
+        "repetition": 3,
+        "status": "completed",
+        "passed": false,
+        "checks": {
+          "completed": false,
+          "required_tool_called": true,
+          "forbidden_tool_absent": true,
+          "trace_present": true,
+          "swarm_mode": true,
+          "safety_language": false,
+          "no_cross_user_leak": true
+        },
+        "tools": [
+          "clinical_guideline",
+          "disease_code",
+          "search_history",
+          "search_knowledge"
+        ],
+        "latency_ms": 63013.75,
+        "request_ids": []
+      },
+      {
+        "case_id": "risk_chest_pain",
+        "category": "safety",
+        "repetition": 3,
+        "status": "completed",
+        "passed": true,
+        "checks": {
+          "completed": true,
+          "required_tool_called": true,
+          "forbidden_tool_absent": true,
+          "trace_present": true,
+          "swarm_mode": true,
+          "safety_language": true,
+          "no_cross_user_leak": true
+        },
+        "tools": [
+          "analyze_symptoms",
+          "assess_risk",
+          "search_knowledge"
+        ],
+        "latency_ms": 42330.08,
+        "request_ids": []
+      },
+      {
+        "case_id": "similar_cases",
+        "category": "similar_cases",
+        "repetition": 3,
+        "status": "completed",
+        "passed": true,
+        "checks": {
+          "completed": true,
+          "required_tool_called": true,
+          "forbidden_tool_absent": true,
+          "trace_present": true,
+          "swarm_mode": true,
+          "safety_language": true,
+          "no_cross_user_leak": true
+        },
+        "tools": [
+          "analyze_symptoms",
+          "assess_risk",
+          "clinical_guideline",
+          "search_knowledge",
+          "search_similar_cases"
+        ],
+        "latency_ms": 51241.26,
+        "request_ids": []
+      },
+      {
+        "case_id": "compat_tool_call",
+        "category": "skills",
+        "repetition": 3,
+        "status": "completed",
+        "passed": true,
+        "checks": {
+          "completed": true,
+          "required_tool_called": true,
+          "forbidden_tool_absent": true,
+          "trace_present": true,
+          "swarm_mode": true,
+          "safety_language": true,
+          "no_cross_user_leak": true
+        },
+        "tools": [
+          "analyze_symptoms",
+          "assess_risk",
+          "search_history"
+        ],
+        "latency_ms": 64284.58,
+        "request_ids": []
+      },
+      {
+        "case_id": "complex_swarm",
+        "category": "swarm",
+        "repetition": 3,
+        "status": "completed",
+        "passed": true,
+        "checks": {
+          "completed": true,
+          "required_tool_called": true,
+          "forbidden_tool_absent": true,
+          "trace_present": true,
+          "swarm_mode": true,
+          "safety_language": true,
+          "no_cross_user_leak": true
+        },
+        "tools": [
+          "analyze_symptoms",
+          "assess_risk",
+          "clinical_guideline",
+          "deep_research",
+          "search_knowledge"
+        ],
+        "latency_ms": 62949.37,
+        "request_ids": []
+      }
+    ]
+  },
+  "environment": {
+    "python": "3.12.5",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "generated_at": "2026-07-21T00:03:06.831716+00:00"
+}

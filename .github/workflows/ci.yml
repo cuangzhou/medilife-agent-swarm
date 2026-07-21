@@ -24,6 +24,11 @@ jobs:
       - run: python -m ruff check --config pyproject.toml --exclude training .
       - run: python -m pytest
       - run: python evaluation/evidence_memory_benchmark.py --mode smoke --output "${{ runner.temp }}/medilife-smoke.json"
+      - run: python evaluation/capability_parity.py --output "${{ runner.temp }}/capability-parity.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: capability-parity-${{ matrix.os }}-${{ matrix.python }}-${{ github.sha }}
+          path: ${{ runner.temp }}/capability-parity.json
       - run: python -m build
       - run: python -m pip install --force-reinstall dist/*.whl
         if: runner.os == 'Linux'

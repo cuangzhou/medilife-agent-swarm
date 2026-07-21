@@ -1,0 +1,77 @@
+{
+  "project": "MediLife",
+  "benchmark": "deepseek-e2e-compat",
+  "dataset_version": "medilife-e2e-v1",
+  "implementation_status": "integrated",
+  "git_commit": "7c6b1b6a2c1aa960b4610766cf367868f602aef3",
+  "command": "python evaluation/deepseek_e2e.py --provider openai-compatible --model deepseek-v4-flash --cases compat --repetitions 1 --seed 20260721 --max-tokens 2048 --timeout 180.0 --output evaluation\\artifacts\\measured\\deepseek-v4-flash-compat.json",
+  "case_count": 1,
+  "repetitions": 1,
+  "seed": 20260721,
+  "limitations": [
+    "Anonymous synthetic cases; not evidence of clinical effectiveness",
+    "Deterministic routing/tool/safety assertions; no LLM judge",
+    "Raw prompts and responses are intentionally not persisted"
+  ],
+  "result_kind": "measured",
+  "metrics": {
+    "manifest": {
+      "started_at": "2026-07-20T23:36:28.765352+00:00",
+      "provider": "openai-compatible",
+      "model": "deepseek-v4-flash",
+      "temperature": 0,
+      "max_tokens": 2048,
+      "timeout_seconds": 180.0,
+      "dataset_sha256": "470e24f975f5604834bbfd16e0168fc3dc4c5f82b7ec6bf17e5c7967b254f57f",
+      "selected_case_ids_sha256": "555ee8474c30f7e3be1dd4b850bf370eb7d5d1b0b7819773fb5a90e6c1dc85bc",
+      "base_url_sha256": "a34e2a4708ed1c61008a151688838dcf1c44d4e7f08054633e72ba7c0b16cfc1",
+      "credentials_present": true,
+      "git_dirty": true
+    },
+    "summary": {
+      "scheduled": 1,
+      "completed": 1,
+      "infrastructure_failures": 0,
+      "strict_passes": 1,
+      "strict_pass_rate": 1.0,
+      "usage": {
+        "requests": 11,
+        "prompt_tokens": 21991,
+        "completion_tokens": 5120,
+        "total_tokens": 27111
+      },
+      "failure_types": {}
+    },
+    "cases": [
+      {
+        "case_id": "compat_tool_call",
+        "category": "skills",
+        "repetition": 1,
+        "status": "completed",
+        "passed": true,
+        "checks": {
+          "completed": true,
+          "required_tool_called": true,
+          "forbidden_tool_absent": true,
+          "trace_present": true,
+          "swarm_mode": true,
+          "safety_language": true,
+          "no_cross_user_leak": true
+        },
+        "tools": [
+          "analyze_symptoms",
+          "assess_risk",
+          "search_history",
+          "search_similar_cases"
+        ],
+        "latency_ms": 48259.67,
+        "request_ids": []
+      }
+    ]
+  },
+  "environment": {
+    "python": "3.12.5",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "generated_at": "2026-07-20T23:37:18.007913+00:00"
+}
