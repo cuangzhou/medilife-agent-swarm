@@ -1,0 +1,418 @@
+{
+  "project": "MediLife",
+  "benchmark": "evidence-memory-full",
+  "dataset_version": "medilife-longitudinal-v1",
+  "result_kind": "measured",
+  "implementation_status": "mvp",
+  "git_commit": "7c6b1b6a2c1aa960b4610766cf367868f602aef3",
+  "command": "python evaluation/evidence_memory_benchmark.py --mode full",
+  "case_count": 50,
+  "repetitions": 3,
+  "seed": 20260714,
+  "metrics": {
+    "dependency_groups": {
+      "milvus_static": {
+        "status": "SKIPPED_DEPENDENCY",
+        "reason": "pymilvus unavailable"
+      },
+      "milvus_mem0": {
+        "status": "SKIPPED_DEPENDENCY",
+        "reason": "pymilvus and/or mem0 unavailable"
+      },
+      "evidence_graph_logic": {
+        "status": "MEASURED",
+        "reason": "deterministic governance layer; not Milvus/Mem0 E2E"
+      }
+    },
+    "logic_layer": {
+      "summary": {
+        "static_recall_at_5": 1.0,
+        "graph_recall_at_5": 1.0,
+        "static_multihop_recall": 0.2,
+        "graph_multihop_recall": 1.0,
+        "temporal_consistency": 1.0,
+        "conflict_detection_rate": 1.0,
+        "source_coverage": 1.0,
+        "unsupported_claim_rate": 0.0,
+        "high_risk_recall": 1.0,
+        "graph_p50_latency_ms": 0.14575000022887252,
+        "graph_p95_latency_ms": 0.24046666658250615,
+        "static_p50_latency_ms": 0.11851666689229508,
+        "avg_tokens": "NOT_MEASURED",
+        "stddev": {
+          "static_recall_at_5": 0.0,
+          "graph_recall_at_5": 0.0,
+          "static_multihop_recall": 0.0,
+          "graph_multihop_recall": 0.0,
+          "temporal_consistency": 0.0,
+          "conflict_detection_rate": 0.0,
+          "source_coverage": 0.0,
+          "unsupported_claim_rate": 0.0,
+          "high_risk_recall": 0.0,
+          "graph_p50_latency_ms": 0.0012832251648002735,
+          "graph_p95_latency_ms": 0.053575263136784464,
+          "static_p50_latency_ms": 0.003046673785325767
+        }
+      },
+      "runs": [
+        {
+          "static_recall_at_5": 1.0,
+          "graph_recall_at_5": 1.0,
+          "static_multihop_recall": 0.2,
+          "graph_multihop_recall": 1.0,
+          "temporal_consistency": 1.0,
+          "conflict_detection_rate": 1.0,
+          "source_coverage": 1.0,
+          "unsupported_claim_rate": 0.0,
+          "high_risk_recall": 1.0,
+          "graph_p50_latency_ms": 0.14395000016520498,
+          "graph_p95_latency_ms": 0.164700000823359,
+          "static_p50_latency_ms": 0.11435000033088727,
+          "avg_tokens": "NOT_MEASURED"
+        },
+        {
+          "static_recall_at_5": 1.0,
+          "graph_recall_at_5": 1.0,
+          "static_multihop_recall": 0.2,
+          "graph_multihop_recall": 1.0,
+          "temporal_consistency": 1.0,
+          "conflict_detection_rate": 1.0,
+          "source_coverage": 1.0,
+          "unsupported_claim_rate": 0.0,
+          "high_risk_recall": 1.0,
+          "graph_p50_latency_ms": 0.14645000010204967,
+          "graph_p95_latency_ms": 0.278499999694759,
+          "static_p50_latency_ms": 0.12154999967606273,
+          "avg_tokens": "NOT_MEASURED"
+        },
+        {
+          "static_recall_at_5": 1.0,
+          "graph_recall_at_5": 1.0,
+          "static_multihop_recall": 0.2,
+          "graph_multihop_recall": 1.0,
+          "temporal_consistency": 1.0,
+          "conflict_detection_rate": 1.0,
+          "source_coverage": 1.0,
+          "unsupported_claim_rate": 0.0,
+          "high_risk_recall": 1.0,
+          "graph_p50_latency_ms": 0.1468500004193629,
+          "graph_p95_latency_ms": 0.2781999992294004,
+          "static_p50_latency_ms": 0.11965000066993525,
+          "avg_tokens": "NOT_MEASURED"
+        }
+      ],
+      "case_results": [
+        {
+          "case_id": "case_001",
+          "static_multihop_hit": true,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_002",
+          "static_multihop_hit": true,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_003",
+          "static_multihop_hit": false,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_004",
+          "static_multihop_hit": false,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_005",
+          "static_multihop_hit": false,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_006",
+          "static_multihop_hit": false,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_007",
+          "static_multihop_hit": false,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_008",
+          "static_multihop_hit": false,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_009",
+          "static_multihop_hit": false,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_010",
+          "static_multihop_hit": false,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_011",
+          "static_multihop_hit": true,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_012",
+          "static_multihop_hit": true,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_013",
+          "static_multihop_hit": false,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_014",
+          "static_multihop_hit": false,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_015",
+          "static_multihop_hit": false,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_016",
+          "static_multihop_hit": false,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_017",
+          "static_multihop_hit": false,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_018",
+          "static_multihop_hit": false,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_019",
+          "static_multihop_hit": false,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_020",
+          "static_multihop_hit": false,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_021",
+          "static_multihop_hit": true,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_022",
+          "static_multihop_hit": true,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_023",
+          "static_multihop_hit": false,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_024",
+          "static_multihop_hit": false,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_025",
+          "static_multihop_hit": false,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_026",
+          "static_multihop_hit": false,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_027",
+          "static_multihop_hit": false,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_028",
+          "static_multihop_hit": false,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_029",
+          "static_multihop_hit": false,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_030",
+          "static_multihop_hit": false,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_031",
+          "static_multihop_hit": true,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_032",
+          "static_multihop_hit": true,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_033",
+          "static_multihop_hit": false,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_034",
+          "static_multihop_hit": false,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_035",
+          "static_multihop_hit": false,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_036",
+          "static_multihop_hit": false,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_037",
+          "static_multihop_hit": false,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_038",
+          "static_multihop_hit": false,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_039",
+          "static_multihop_hit": false,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_040",
+          "static_multihop_hit": false,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_041",
+          "static_multihop_hit": true,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_042",
+          "static_multihop_hit": true,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_043",
+          "static_multihop_hit": false,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_044",
+          "static_multihop_hit": false,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_045",
+          "static_multihop_hit": false,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_046",
+          "static_multihop_hit": false,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_047",
+          "static_multihop_hit": false,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_048",
+          "static_multihop_hit": false,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_049",
+          "static_multihop_hit": false,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        },
+        {
+          "case_id": "case_050",
+          "static_multihop_hit": false,
+          "graph_multihop_hit": true,
+          "conflict_ok": true
+        }
+      ]
+    }
+  },
+  "limitations": [
+    "匿名合成纵向病例，不代表临床有效性",
+    "Token 指标需模型调用，当前逻辑层记为 NOT_MEASURED",
+    "Milvus/Mem0 端到端组尚未执行，不得据此声称 integrated"
+  ],
+  "environment": {
+    "python": "3.12.5",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "generated_at": "2026-07-20T23:23:01.570620+00:00"
+}

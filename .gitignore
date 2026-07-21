@@ -51,6 +51,7 @@ htmlcov/
 # 会话记录
 session_summaries/*.md
 agent_identities/*.md
+memory/swarm/
 
 # Runtime data and local databases
 memory/data/

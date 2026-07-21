@@ -7,14 +7,21 @@ SharedContext：Agent 群体智能的共享环境（信息素系统）
 
 这是去中心化协作的核心：没有中心控制节点，只有共享环境
 """
+from contextvars import ContextVar
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
-from typing import Dict, Any, List, Optional
+from typing import Callable, Dict, Any, List, Optional
 import uuid
 from collections import defaultdict
 
 from .events import Event, EventType
+
+# 可观测性事件汇：外部（如演示/监控层）可在当前 asyncio context 注入 sink，
+# 实时接收所有 publish_event 的事件 dict。默认 None，不影响任何现有行为。
+EVENT_SINK: ContextVar[Optional[Callable[[Dict[str, Any]], None]]] = ContextVar(
+    "EVENT_SINK", default=None
+)
 
 
 class TaskStatus(Enum):
@@ -124,6 +131,12 @@ class SharedContext:
         Agent 通过发布事件来通知其他 Agent
         """
         self.events.append(event)
+        sink = EVENT_SINK.get()
+        if sink is not None:
+            try:
+                sink(event.to_dict())
+            except Exception:
+                pass  # sink 异常不得影响主流程
 
     def get_events(
         self,
@@ -160,6 +173,7 @@ class SharedContext:
             data={
                 "subtask_id": subtask.id,
                 "type": subtask.type,
+                "description": subtask.description,
                 "assigned_agent": subtask.assigned_agent
             }
         ))

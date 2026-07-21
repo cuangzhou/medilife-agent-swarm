@@ -1,0 +1,80 @@
+{
+  "schema_version": "deepseek-dual-project-report.v1",
+  "generated_at": "2026-07-21T00:04:11.064381+00:00",
+  "model": "deepseek-v4-flash",
+  "temperature": 0,
+  "projects": {
+    "Tifa": {
+      "artifact_status": "measured",
+      "code_version": "93600c35179389cfe3957fedd2dee3496ad69abf",
+      "executed": 30,
+      "strict_pass_rate": 0.0,
+      "infrastructure_failure_rate": 0.03333333333333333,
+      "duplicate_side_effect_rate": 0.0,
+      "failure_distribution": {
+        "budget_exceeded": 7,
+        "invalid_arguments": 6,
+        "step_limit_reached": 10,
+        "path_error": 4,
+        "loop_detected": 2,
+        "transport": 1
+      },
+      "formal_100x3_started": false,
+      "smoke_gate_passed": false,
+      "decision": "STOPPED_AT_SMOKE_GATE"
+    },
+    "MediLife": {
+      "artifact_status": "measured",
+      "git_commit": "7c6b1b6a2c1aa960b4610766cf367868f602aef3",
+      "scheduled": 30,
+      "completed": 30,
+      "strict_passes": 26,
+      "strict_pass_rate": 0.8666666666666667,
+      "infrastructure_failures": 0,
+      "usage": {
+        "requests": 244,
+        "prompt_tokens": 514547,
+        "completion_tokens": 125096,
+        "total_tokens": 639643
+      },
+      "failed_cases": [
+        {
+          "case_id": "research_evidence",
+          "category": "deep_research",
+          "repetition": 1,
+          "failed_checks": [
+            "swarm_mode"
+          ]
+        },
+        {
+          "case_id": "research_evidence",
+          "category": "deep_research",
+          "repetition": 2,
+          "failed_checks": [
+            "required_tool_called",
+            "swarm_mode"
+          ]
+        },
+        {
+          "case_id": "research_evidence",
+          "category": "deep_research",
+          "repetition": 3,
+          "failed_checks": [
+            "swarm_mode"
+          ]
+        },
+        {
+          "case_id": "tool_failure_degrade",
+          "category": "resilience",
+          "repetition": 3,
+          "failed_checks": [
+            "completed",
+            "safety_language"
+          ]
+        }
+      ],
+      "evidence_scope": "anonymous synthetic E2E routing/tool/trace/safety assertions; not clinical effectiveness"
+    }
+  },
+  "comparison_policy": "Project scores are reported separately and are not combined into a single score."
+}

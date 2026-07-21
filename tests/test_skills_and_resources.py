@@ -49,6 +49,32 @@ class SkillsAndResourcesTests(unittest.TestCase):
         self.assertIsInstance(result, dict)
         self.assertIn("total_messages", result)
 
+    def test_skill_registry_uses_strict_pydantic_contracts(self):
+        agent = DiagnosticAgent(llm_client=MockLLM())
+        tool = next(item for item in agent.skill_registry.to_openai_format() if item["function"]["name"] == "search_history")
+        self.assertFalse(tool["function"]["parameters"]["additionalProperties"])
+
+        wrong_type = asyncio.run(
+            agent.skill_registry.execute("search_history", session_id="test-session", limit="1")
+        )
+        self.assertEqual(wrong_type["status"], "validation_error")
+
+        extra_field = asyncio.run(
+            agent.skill_registry.execute("search_history", session_id="test-session", limit=1, unexpected=True)
+        )
+        self.assertEqual(extra_field["status"], "validation_error")
+
+    def test_skill_registry_validates_output_contract(self):
+        agent = DiagnosticAgent(llm_client=MockLLM())
+        agent.skill_registry.register(
+            name="invalid_output",
+            function=lambda: "not-an-object",
+            description="Return an invalid output",
+            parameters=[],
+        )
+        result = asyncio.run(agent.skill_registry.execute("invalid_output"))
+        self.assertEqual(result["status"], "validation_error")
+
     def test_bundled_database_copies_to_writable_runtime(self):
         self.assertTrue(bundled_knowledge_db().is_file())
         with tempfile.TemporaryDirectory() as directory, patch.dict(os.environ, {"MEDILIFE_DATA_DIR": directory}):
@@ -59,4 +85,3 @@ class SkillsAndResourcesTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

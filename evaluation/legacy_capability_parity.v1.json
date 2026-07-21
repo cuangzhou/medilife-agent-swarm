@@ -1,0 +1,16 @@
+{
+  "schema_version": "legacy-capability-parity.v1",
+  "capabilities": {
+    "medical_skills": {"count": 9, "probe": "skills_and_agents"},
+    "worker_agents": {"symbols": ["ConsultationAgent", "DiagnosticAgent", "ResearchAgent"], "probe": "skills_and_agents"},
+    "function_calling": {"format": "openai", "probe": "skills_and_agents"},
+    "agent_loop": {"symbol": "core.agent_loop.AgentLoop", "probe": "runtime_symbols"},
+    "swarm": {"symbol": "swarm.swarm_coordinator.SwarmCoordinator", "probe": "runtime_symbols"},
+    "milvus_lite_adapter": {"symbol": "knowledge.milvus_kb.MedicalKnowledgeBase", "probe": "optional_adapters"},
+    "long_term_memory": {"symbol": "memory.long_term.LongTermMemory", "probe": "optional_adapters"},
+    "deep_research": {"symbol": "research.deep_research_workflow.DeepResearchWorkflow", "probe": "runtime_symbols"},
+    "trace_graph": {"symbol": "research.trace_graph.TraceGraphBuilder", "probe": "trace_graph"},
+    "api": {"routes": ["/api/health", "/api/chat", "/api/evidence/search", "/api/evidence/{episode_id}/verify"], "probe": "api_contract"},
+    "governed_evidence_memory": {"requirements": ["candidate_exclusion", "user_isolation", "verification_gate"], "probe": "evidence_memory"}
+  }
+}

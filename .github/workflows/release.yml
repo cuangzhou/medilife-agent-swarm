@@ -23,6 +23,7 @@ jobs:
           python-version: "3.12"
       - run: python -m pip install -e ".[test,release]"
       - run: python -m pytest
+      - run: python evaluation/capability_parity.py --output capability-parity.json
       - run: python -m pip_audit
       - run: python -m build
       - run: cyclonedx-py environment -o sbom.json
@@ -35,3 +36,4 @@ jobs:
           path: |
             dist/*
             sbom.json
+            capability-parity.json

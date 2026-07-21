@@ -4,6 +4,7 @@ Agent循环引擎
 支持短期记忆集成
 支持约束验证（Harness Engineering）
 """
+import time
 import uuid
 import json
 from typing import Dict, Any, List, Optional
@@ -12,6 +13,20 @@ from loguru import logger
 from .state_manager import StateManager, TaskStatus
 from .llm_client import LLMResponse
 from research.trace_graph import TraceGraphBuilder
+
+
+def _emit_observability(payload: Dict[str, Any]) -> None:
+    """向 EVENT_SINK 发送可观测性事件（默认 None，零开销；sink 异常不影响主流程）
+
+    延迟导入 swarm.shared_context，避免 swarm/__init__ → agents → core.agent_loop 循环导入。
+    """
+    try:
+        from swarm.shared_context import EVENT_SINK
+        sink = EVENT_SINK.get()
+        if sink is not None:
+            sink(payload)
+    except Exception:
+        pass
 
 # Harness Engineering: 约束验证和自动修复
 try:
@@ -188,12 +203,32 @@ class AgentLoop:
                                         f"⚠️ 约束警告: {validation_result.get('reason')}"
                                     )
 
+                            _emit_observability({
+                                "type": "agent_tool_call",
+                                "source_agent": agent.agent_id,
+                                "data": {
+                                    "tool_name": tool_call.name,
+                                    "arguments": str(tool_call.arguments)[:200],
+                                    "call_index": self.tool_call_count,
+                                },
+                            })
+                            _tool_started = time.monotonic()
+
                             tool_result = await agent.execute_tool(
                                 tool_name=tool_call.name,
                                 arguments=tool_call.arguments
                             )
 
                             result_summary = str(tool_result.get("answer", tool_result))[:500] if isinstance(tool_result, dict) else str(tool_result)[:500]
+                            _emit_observability({
+                                "type": "agent_tool_result",
+                                "source_agent": agent.agent_id,
+                                "data": {
+                                    "tool_name": tool_call.name,
+                                    "duration_ms": int((time.monotonic() - _tool_started) * 1000),
+                                    "result_summary": result_summary[:200],
+                                },
+                            })
                             tool_calls_history.append({
                                 "iteration": state.iteration,
                                 "tool_name": tool_call.name,

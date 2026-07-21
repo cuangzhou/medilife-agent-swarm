@@ -5,6 +5,8 @@ MediLife medical assistant API.
 This API exposes the core MediLife Agent Swarm assistant and returns an
 explainable trace graph that clients can render as an evidence chain.
 """
+import asyncio
+import json
 import os
 import sys
 from pathlib import Path
@@ -12,6 +14,7 @@ from typing import Any, Dict, List, Optional
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 
 SWARM_ROOT = Path(__file__).resolve().parent
@@ -44,8 +47,10 @@ MEM0_CONFIG = {"api_key": os.getenv("MEM0_API_KEY", "")}
 
 try:
     from swarm import process_with_swarm
+    from swarm.shared_context import EVENT_SINK
 except Exception:  # pragma: no cover - API should still start for health checks
     process_with_swarm = None
+    EVENT_SINK = None
 
 
 app = FastAPI(title="MediLife Medical Assistant API", version="3.0.0")
@@ -104,6 +109,8 @@ def health_service_metadata() -> Dict[str, Any]:
         "knowledgeBase": knowledge_base_available(),
         "mem0Configured": mem0_available(),
         "evidenceMemory": True,
+        "model": (LLM_CONFIG or {}).get("model_name", ""),
+        "baseUrl": (LLM_CONFIG or {}).get("base_url", ""),
     }
 
 
@@ -141,8 +148,7 @@ async def health() -> Dict[str, Any]:
     return health_service_metadata()
 
 
-@app.post("/api/chat")
-async def chat(request: ChatRequest) -> Dict[str, Any]:
+async def _chat_impl(request: ChatRequest) -> Dict[str, Any]:
     evidence_pack = (
         evidence_memory_service.search(request.question, user_id=request.user_id).to_dict()
         if request.evidence_memory
@@ -283,6 +289,81 @@ async def chat(request: ChatRequest) -> Dict[str, Any]:
             "iterations": result.get("iterations"),
         },
     }
+
+
+@app.post("/api/chat")
+async def chat(request: ChatRequest) -> Dict[str, Any]:
+    """Non-streaming compatibility endpoint."""
+    return await _chat_impl(request)
+
+
+def _wire_event(payload: Any) -> Dict[str, Any]:
+    """Normalize Event.to_dict() and synthetic observability payloads."""
+    if not isinstance(payload, dict):
+        return {"type": "event", "data": {"summary": str(payload)[:200]}}
+    event = dict(payload)
+    raw_type = event.get("type", "event")
+    if hasattr(raw_type, "value"):
+        raw_type = raw_type.value
+    event["type"] = str(raw_type).lower()
+    data = event.get("data") if isinstance(event.get("data"), dict) else {}
+    # Defense in depth: the stream is an observability surface, not a raw prompt dump.
+    for key in ("api_key", "authorization", "token", "secret", "password"):
+        data.pop(key, None)
+    event["data"] = data
+    return event
+
+
+@app.post("/api/chat/stream")
+async def chat_stream(request: ChatRequest) -> StreamingResponse:
+    """Stream request-scoped swarm events and finish with the /api/chat body."""
+    async def generate():
+        queue: asyncio.Queue = asyncio.Queue(maxsize=256)
+        loop = asyncio.get_running_loop()
+
+        def enqueue(normalized: Dict[str, Any]) -> None:
+            try:
+                queue.put_nowait(normalized)
+            except asyncio.QueueFull:
+                pass
+
+        def sink(event: Dict[str, Any]) -> None:
+            normalized = _wire_event(event)
+            try:
+                loop.call_soon_threadsafe(enqueue, normalized)
+            except Exception:
+                pass
+
+        async def execute() -> None:
+            token = EVENT_SINK.set(sink) if EVENT_SINK is not None else None
+            try:
+                result = await _chat_impl(request)
+                await queue.put({"type": "done", "data": result})
+            except asyncio.CancelledError:
+                raise
+            except Exception as exc:
+                await queue.put({"type": "error", "data": {"message": str(exc)[:300], "retryable": True}})
+            finally:
+                if token is not None:
+                    EVENT_SINK.reset(token)
+
+        task = asyncio.create_task(execute())
+        try:
+            yield "data: " + json.dumps({"type": "accepted", "data": {"session_id": request.session_id or ""}}, ensure_ascii=False) + "\n\n"
+            while True:
+                event = await queue.get()
+                yield "data: " + json.dumps(event, ensure_ascii=False) + "\n\n"
+                if event.get("type") in {"done", "error"}:
+                    break
+        finally:
+            if not task.done():
+                task.cancel()
+            await asyncio.gather(task, return_exceptions=True)
+
+    return StreamingResponse(
+        generate(), media_type="text/event-stream",
+        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+    )
 
 
 @app.get("/api/evidence/search")

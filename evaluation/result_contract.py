@@ -43,8 +43,8 @@ def validate_result(result: dict[str, Any]) -> None:
     missing = REQUIRED_FIELDS - result.keys()
     if missing:
         raise ValueError(f"benchmark result missing fields: {sorted(missing)}")
-    if result["result_kind"] not in {"placeholder", "measured"}:
-        raise ValueError("result_kind must be placeholder or measured")
+    if result["result_kind"] not in {"placeholder", "measured", "aborted"}:
+        raise ValueError("result_kind must be placeholder, measured, or aborted")
     if result["implementation_status"] not in {"design", "mvp", "integrated"}:
         raise ValueError("invalid implementation_status")
 

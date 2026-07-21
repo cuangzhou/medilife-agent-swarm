@@ -49,9 +49,12 @@ class SwarmCoordinator:
 
         # 初始化 Agent
         self.lead_agent = LeadAgent(llm_client=self.llm_client)
-        self.consultation_agent = ConsultationAgent()
-        self.diagnostic_agent = DiagnosticAgent()
-        self.research_agent = ResearchAgent()
+        # Keep routing and worker calls on the same configured provider.  This
+        # is essential for reproducible provider evaluation and avoids workers
+        # silently falling back to module-level defaults.
+        self.consultation_agent = ConsultationAgent(llm_client=self.llm_client)
+        self.diagnostic_agent = DiagnosticAgent(llm_client=self.llm_client)
+        self.research_agent = ResearchAgent(llm_client=self.llm_client)
 
         # Worker 池
         self.worker_pool: List[Any] = [
@@ -560,7 +563,8 @@ async def process_with_swarm(
     question: str,
     context: Optional[Dict[str, Any]] = None,
     enable_swarm: bool = True,
-    session_id: Optional[str] = None
+    session_id: Optional[str] = None,
+    llm_client: Optional[LLMClient] = None,
 ) -> Dict[str, Any]:
     """
     便捷函数：使用 Swarm 处理问题
@@ -574,5 +578,5 @@ async def process_with_swarm(
     Returns:
         处理结果
     """
-    coordinator = SwarmCoordinator(enable_swarm=enable_swarm)
+    coordinator = SwarmCoordinator(llm_client=llm_client, enable_swarm=enable_swarm)
     return await coordinator.process(question, context, session_id=session_id)
